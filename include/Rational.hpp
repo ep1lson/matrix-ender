@@ -5,94 +5,101 @@
 #pragma once
 #include <sstream>
 
-// Debug
-#ifdef DEBUG_ME
-#include <iostream>
-using namespace std;
-#endif
-
 class Rational {
     long num, denom;
 
 public:
+    /**
+     * Instantiates a fraction based on numbers provided
+     * The constructor uses XGCD to simplify the fraction automatically
+     *
+     * @param numerator Numerator of the fraction
+     * @param denominator Denominator of the fraction
+     *
+     * @return A Rational type
+     */
+    Rational(long, long);
 
-    // Manual rational instantiation
-    Rational(long numerator, long denominator) {
-        long a = denominator, b = numerator;
-        while (a % b != 0) {
-            long tmp = a;
-            a = b;
-            b = tmp % b;
-        }
-        this->num   = numerator / b;
-        this->denom = denominator / b;
-    }
+    /**
+     * Instantiates a fraction based on a string descriptor and delimiter
+     *
+     * @param descriptor String description of the fraction
+     * @param delimiter Delimiter of the fraction (defaults to '/')
+     *
+     * @return A Rational type
+     */
+    Rational(std::string, char = '/');
 
-    // String instantiation
-    Rational(std::string descriptor, char delimiter = '/') {
-        size_t si    = descriptor.find(delimiter);
-        std::string num   = descriptor.substr(0, si),
-               denom = descriptor.substr(si + 1, descriptor.size());
-        this->num   = std::stoi(num);
-        this->denom = std::stoi(denom);
-    }
+    /**
+     * Instantiates a fraction based on an integer
+     * (The method is intentionally made non-explicit for compatibility purposes)
+     *
+     * @param integer Integer to be converted
+     *
+     * @return A Rational type
+     */
+    Rational(long);
 
-    // int compatibility
-    Rational(int num) : num(num), denom(1) {}
-
-    // Move semantics and destructors: use default
-    Rational(Rational&& rational) = default;
+    // Use default
+    Rational(Rational&&) = default;
     ~Rational() = default;
 
-    // Operators
-    Rational operator+(const Rational& other) {
-        return Rational(
-            this->num * other.denom + other.num * this->denom,
-            other.denom * this->denom
-        );
-    }
+    /**
+     * Adds two Rational number
+     *
+     * @param other Value being added
+     *
+     * @return A Rational type
+     */
+    Rational operator+(const Rational&) const;
 
-    Rational operator-(const Rational& other) {
-        return Rational(
-            this->num * other.denom - other.num * this->denom,
-            other.denom * this->denom
-        );
-    }
+    /**
+     * Subtract two Rational number
+     *
+     * @param other Value being subtracted
+     *
+     * @return A Rational type
+     */
+    Rational operator-(const Rational&) const;
 
-    Rational operator*(const Rational& other) {
-        return Rational(
-            this->num * other.num,
-            this->denom * other.denom
-        );
-    }
+    /**
+     * Multiply two Rational number
+     *
+     * @param other Multiplier
+     *
+     * @return A Rational type
+     */
+    Rational operator*(const Rational&) const;
 
-    Rational operator/(const Rational& other) {
-        return Rational(
-            this->num * other.denom,
-            this->denom * other.num
-        );
-    }
+    /**
+     * Subtract
+     *
+     * @param other Divisor
+     *
+     * @return A Rational type
+     */
+    Rational operator/(const Rational&) const;
 
-    // Multiplicative inverse (a/b -> b/a)
-    Rational inv() {
-        return Rational(
-            this->denom,
-            this->num
-        );
-    }
+    /**
+     * Find the multiplicative inverse of a Rational
+     *
+     * @return A Rational type
+     */
+    Rational inv() const;
 
-    // Additive inverse (a/b -> -a/b)
-    Rational neg() {
-        return Rational(
-            -this->num,
-            this->denom
-        );
-    }
+    /**
+     * Find the additive inverse of a Rational
+     *
+     * @return A Rational type
+     */
+    Rational neg() const;
 
-    // Generic to string method
-    std::string toString(char delimiter = '/') {
-        std::stringstream ss;
-        ss << this->num << delimiter << this->denom;
-        return ss.str();
-    }
+    /**
+     * Find the additive inverse of a Rational
+     *
+     * @param delimiter Fraction separator (defaults to '/')
+     * 
+     * @return String descriptor with a delimiter
+     */
+    std::string toString(char = '/') const;
 };

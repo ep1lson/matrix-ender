@@ -93,7 +93,7 @@ $(MAIN): $(OBJECTS)
 .PHONY: clean
 
 test_rat:
-	$(CXX) $(CXXFLAGS) $(INCLUDES) $(TEST_PATH) -o local && ./local
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -DDEBUG_RATIONAL  src/Rational.cpp -o local && ./local
 
 clean:
 	$(RM) $(OUTPUTMAIN)
