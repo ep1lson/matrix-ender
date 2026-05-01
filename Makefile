@@ -44,6 +44,9 @@ RM = rm -f
 MD	:= mkdir -p
 endif
 
+# custom test_branch parameters
+TEST_PATH   := src/local_test/tc.cpp
+
 # define any directories containing header files other than /usr/include
 INCLUDES	:= $(patsubst %,-I%, $(INCLUDEDIRS:%/=%))
 
@@ -88,6 +91,10 @@ $(MAIN): $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c -MMD $<  -o $@
 
 .PHONY: clean
+
+test_rat:
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -DDEBUG_RATIONAL  src/Rational.cpp -o local && ./local
+
 clean:
 	$(RM) $(OUTPUTMAIN)
 	$(RM) $(call FIXPATH,$(OBJECTS))
