@@ -13,6 +13,12 @@ concept Arithmetic = requires(T a, T b) {
     a / b;
 };
 
+enum class FillType {
+    UPPER_TRI,
+    LOWER_TRI,
+    EVERY
+};
+
 template <Arithmetic T>
 class Matrix {
 private:
@@ -41,7 +47,18 @@ private:
         std::string message;
 
     public:
-        explicit NotInvertibleMatrixException(std::string message) : message(message) {};
+        explicit NotInvertibleMatrixException(std::string message) : message(message) {}
+
+        const char* what() const noexcept override {
+            return this->message.c_str();
+        }
+    };
+
+    class InvalidFillTypeException: public std::exception {
+    private:
+        std::string message;
+    public:
+        explicit InvalidFillTypeException(std::string message) : message(message) {}
 
         const char* what() const noexcept override {
             return this->message.c_str();
@@ -50,7 +67,7 @@ private:
 
 public:
     // Filler constructor
-    Matrix(long, long, T);
+    Matrix(long, long, T, FillType = FillType::EVERY);
 
     // String constructor
     Matrix(std::string, char = ';', char = ',');
@@ -69,7 +86,7 @@ public:
     std::string toString(long = -1, long = -1, char = ';', char = ',') const;
     
     // Print the matrix
-    void print(int, std::string) const;
+    void print(char = '\n', char = ',') const;
 
     // Matrix arithmetics (symbolic)
 
@@ -125,7 +142,7 @@ public:
     bool inspan(Vector);
 
     // Determine type of solution(unique, infinite, nil) & solve the matrix with the input vector b
-    // Reading from Solution.vector when .type = infinite / nil is undefined behavior
+    // Reading from Solution.vector when Solution.type = infinite / nil is undefined behavior
     Solution solve(Vector);
     
     // Diagnoize the matrix
@@ -135,7 +152,7 @@ public:
     Matrix<T> LU();
 
     // Get the norm(1-norm, infinity norm, euclidean norm) of a matrix
-    long norm(std::string) = 0;
+    long norm(std::string);
 
     // Matrix properties
 
@@ -143,8 +160,8 @@ public:
     long rank();
 
     // Get nullity of matrix                                              
-    long nullity();
+    long null();
 
     // Get dimension of matrix
-    long dimension();
+    long dim();
 };
