@@ -22,7 +22,7 @@ public:
     Rational(long, long);
 
     /**
-     * Instantiates a fraction based on a string descriptor and delimiter
+     * Instantiates a fraction based on a string descriptor and a delimiter
      *
      * @param descriptor String description of the fraction
      * @param delimiter Delimiter of the fraction (defaults to '/')

@@ -1,6 +1,9 @@
 #include "Matrix.hpp"
+#include "Rational.hpp"
+#include "Useful.hpp"
 
 #include <iostream>
+#include <sstream>
 
 #ifdef DEBUG_MATRIX
 using std::cout, std::cin, std::endl;
@@ -74,9 +77,55 @@ void Matrix<T>::print(char row_delimiter, char column_delimiter, bool tab, bool 
     std::cout << (pad ? "]\n" : "]") << std::endl;
 }
 
+template <Arithmetic T>
+Matrix<T>::Matrix(std::string descriptor, char row_delimiter, char column_delimiter) {
+    std::istringstream iss(descriptor);
+    std::string row_tkn;
+    while (std::getline(iss, row_tkn, row_delimiter) && !row_tkn.empty()) {
+        std::vector<T> row;
+        std::istringstream row_iss(row_tkn);
+        std::string tkn;
+        while (std::getline(row_iss, tkn, column_delimiter) && !tkn.empty()) {
+            row.push_back(from_string<T>(tkn));
+        }
+        this->matrix.push_back(row);
+    }
+    this->row = this->matrix.size();
+    this->col = this->matrix[0].size();
+}
+
+template <Arithmetic T>
+std::string Matrix<T>::toString(long row, long column, char row_delimiter, char column_delimiter, bool tab) const {
+    if (row > this->row || column > this->col) {
+        throw IndexOutOfBoundException("Index out of bounds");
+    }
+
+    row = row < 0 ? this->row : row;
+    column = column < 0 ? this->col : col;
+    std::ostringstream oss;
+    oss << "[";
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < this->col; j++) {
+            if (i != 0 && j == 0) oss << " ";
+            oss << this->matrix[i][j];
+            if (j != this->col - 1) {
+                oss << column_delimiter;
+                if (tab) oss << "\t";
+            }
+        }
+        if (i != column - 1) oss << row_delimiter;
+    }
+    oss << "]" << std::endl;
+    return oss.str();
+}
+
+template <Arithmetic T>
+std::ostream& operator<<(std::ostream& os, const Matrix<T> matrix) {
+    return os << matrix.toString();
+}
+
 
 #ifdef DEBUG_MATRIX
-#include "Rational.hpp"
 int main() {
     
     print("=== MATRIX MODULE DEBUG ===\n");
@@ -85,6 +134,9 @@ int main() {
     mymat.print();
     Matrix<Rational> myratmat(4, 4, 2, FillType::LOWER_TRI);
     myratmat.print();
+    Matrix<int> strmat("1,2,3;4,5,6;7,8,9,;");
+    strmat.print();
+    cout << "printing matrix:\n" << strmat << endl;
 
     return 0;
 }
