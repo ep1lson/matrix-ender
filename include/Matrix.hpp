@@ -86,7 +86,7 @@ public:
     std::string toString(long = -1, long = -1, char = ';', char = ',') const;
     
     // Print the matrix
-    void print(char = '\n', char = ',') const;
+    void print(char = '\n', char = ',', bool = true, bool = true) const;
 
     // Matrix arithmetics (symbolic)
 

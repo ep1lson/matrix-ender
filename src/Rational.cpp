@@ -72,7 +72,7 @@ std::string Rational::toString(char separator) const {
     return ss.str();
 }
 
-std::ostream& operator<<(std::ostream& os, Rational& rational) {
+std::ostream& operator<<(std::ostream& os, const Rational& rational) {
     return (os << rational.toString());
 }
 
@@ -86,7 +86,7 @@ void print(Args... args) {
     cout << endl;
 }
 
-int main(/*int argc, char* argv[]*/) {
+int main() {
     print("=== RATIONAL MODULE DEBUG ===");
 
     // Init

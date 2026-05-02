@@ -41,11 +41,6 @@ public:
      */
     Rational(long);
 
-    // Use default
-    Rational(Rational&&) = default;
-    Rational(Rational&) = default;
-    ~Rational() = default;
-
     /**
      * Adds two Rational number
      *
@@ -106,4 +101,4 @@ public:
     std::string toString(char = '/') const;
 };
 
-std::ostream& operator<<(std::ostream&, Rational&);
+std::ostream& operator<<(std::ostream&, const Rational&);

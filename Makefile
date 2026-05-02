@@ -95,7 +95,7 @@ $(MAIN): $(OBJECTS)
 test_rat:
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -DDEBUG_RATIONAL src/Rational.cpp -o rat && ./rat
 test_mat:
-	$(CXX) $(CXXFLAGS) $(INCLUDES) -DDEBUG_MATRIX src/Matrix.cpp -o matrix && ./matrix
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -DDEBUG_MATRIX src/Rational.cpp src/Matrix.cpp -o matrix && ./matrix
 
 clean_test:
 	rm -f ./rat ./matrix

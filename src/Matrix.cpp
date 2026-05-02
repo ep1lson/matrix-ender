@@ -16,7 +16,7 @@ void print(Args... args) {
 
 template <Arithmetic T>
 Matrix<T>::Matrix(long row, long column, T filler, FillType fill_type)
-    : row(row), col(column), matrix(row, std::vector<T>(column, 0)) {
+    : row(row), col(column), matrix(row, std::vector<T>(column, T(0))) {
         switch (fill_type) {
             case FillType::EVERY:
                 this->matrix = std::vector<std::vector<T>>(row, std::vector<T>(column, filler));
@@ -44,26 +44,31 @@ Matrix<T>::Matrix(long row, long column, T filler, FillType fill_type)
 }
 
 template <Arithmetic T>
-void Matrix<T>::print(char row_delimiter, char column_delimiter) const {
-    std::cout << "[";
+void Matrix<T>::print(char row_delimiter, char column_delimiter, bool tab, bool pad) const {
+    std::cout << (pad ? "\n[" : "[");
     for (int i = 0; i < this->row; i++) {
         for (int j = 0; j < this->col; j++) {
-            if (i != 0 && j == 0) std::cout << " ";
+            if ( i != 0 && j == 0) std::cout << " ";
             std::cout << this->matrix[i][j];
             if (j != this->col - 1) std::cout << column_delimiter;
+            if (tab && !(i == this->row - 1 && j == this->col - 1)) std::cout << "\t";
         }
         if (i != this->row - 1) std::cout << row_delimiter;
     }
-    std::cout << "]" << std::endl;
+    std::cout << (pad ? "]\n" : "]") << std::endl;
 }
 
 
 #ifdef DEBUG_MATRIX
+#include "Rational.hpp"
 int main() {
+    
     print("=== MATRIX MODULE DEBUG ===\n");
 
     Matrix<int> mymat = Matrix(4, 4, 1, FillType::LOWER_TRI);
     mymat.print();
+    Matrix<Rational> myratmat = Matrix<Rational>(4, 4, 2, FillType::LOWER_TRI);
+    myratmat.print();
 
     return 0;
 }
