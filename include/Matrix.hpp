@@ -15,7 +15,9 @@ concept Arithmetic = requires(T a, T b) {
 
 enum class FillType {
     UPPER_TRI,
+    UPPER_TRI_R,
     LOWER_TRI,
+    LOWER_TRI_R,
     EVERY
 };
 

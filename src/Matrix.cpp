@@ -29,10 +29,26 @@ Matrix<T>::Matrix(long row, long column, T filler, FillType fill_type)
                     }
                 }
                 break;
+            
+            case FillType::UPPER_TRI_R:
+                for (int i = 0; i < column; i++) {
+                    for (int j = 0; j < row - i; j++) {
+                        this->matrix[j][i] = filler;
+                    }
+                }
+                break;
 
             case FillType::LOWER_TRI:
                 for (int i = 0; i < column; i++) {
                     for (int j = 0; j < row - i; j++) {
+                        this->matrix[row - 1 - j][i] = filler;
+                    }
+                }
+                break;
+            
+            case FillType::LOWER_TRI_R:
+                for (int i = 0; i < column; i++) {
+                    for (int j = 0; j <= i; j++) {
                         this->matrix[row - 1 - j][i] = filler;
                     }
                 }
@@ -65,9 +81,9 @@ int main() {
     
     print("=== MATRIX MODULE DEBUG ===\n");
 
-    Matrix<int> mymat = Matrix(4, 4, 1, FillType::LOWER_TRI);
+    Matrix<int> mymat(4, 4, 1, FillType::UPPER_TRI_R);
     mymat.print();
-    Matrix<Rational> myratmat = Matrix<Rational>(4, 4, 2, FillType::LOWER_TRI);
+    Matrix<Rational> myratmat(4, 4, 2, FillType::LOWER_TRI);
     myratmat.print();
 
     return 0;
