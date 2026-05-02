@@ -4,6 +4,7 @@
 
 #pragma once
 #include <sstream>
+#include <ostream>
 
 class Rational {
     long num, denom;
@@ -42,6 +43,7 @@ public:
 
     // Use default
     Rational(Rational&&) = default;
+    Rational(Rational&) = default;
     ~Rational() = default;
 
     /**
@@ -103,3 +105,5 @@ public:
      */
     std::string toString(char = '/') const;
 };
+
+std::ostream& operator<<(std::ostream&, Rational&);
